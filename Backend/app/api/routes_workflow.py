@@ -1,10 +1,12 @@
 from io import BytesIO
 from uuid import uuid4
 
-from fastapi import APIRouter, HTTPException, status, UploadFile, File
+import requests
+from fastapi import APIRouter, HTTPException, status, UploadFile, File, Query
 
 from app.core.logging_config import get_logger
 from app.agents.main_agent import MultiAgentController
+from app.services.web_scraper import WebScraper
 from app.schemas.workflow import (
     FinalRFPResponse,
     WorkflowProgress,
@@ -54,6 +56,79 @@ async def run_auto_bid() -> FinalRFPResponse:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to run RFP auto-bid pipeline.",
+        )
+
+
+@router.post(
+    "/rfp/auto-bid-url",
+    response_model=FinalRFPResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Run full multi-agent RFP pipeline by scraping a URL",
+)
+async def run_auto_bid_for_url(
+    url: str = Query(..., description="Website URL to scrape for RFP listings"),
+    rfp_id: str | None = Query(None, description="Optional RFP ID override"),
+    title: str | None = Query(None, description="Optional title override"),
+    due_date: str | None = Query(None, description="Optional due date override (YYYY-MM-DD)"),
+) -> FinalRFPResponse:
+    """
+    Flow 3: URL Scraping
+    
+    - You provide a website URL.
+    - Backend scrapes the page to find RFP PDF links.
+    - Downloads the first PDF found (or best match).
+    - Parses it via RFPUnderstandingService (Gemini).
+    - Technical + Pricing + Main Agent run as usual.
+    """
+    try:
+        scraper = WebScraper()
+        
+        # Scrape the URL to find RFP listings
+        listings = scraper.scrape_rfp_listings([url], due_within_months=12)
+        
+        if not listings:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No RFP listings found on {url}. Please ensure the page contains RFP/tender links or PDF files.",
+            )
+        
+        # Use the first listing found
+        listing = listings[0]
+        pdf_url = listing.url
+        
+        # Download the PDF
+        try:
+            response = requests.get(pdf_url, timeout=30)
+            response.raise_for_status()
+            pdf_bytes = response.content
+        except requests.RequestException as e:
+            logger.error("Failed to download PDF from %s: %s", pdf_url, e)
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Failed to download PDF from {pdf_url}: {str(e)}",
+            )
+        
+        buffer = BytesIO(pdf_bytes)
+        
+        # Use scraped data or provided values
+        effective_id = rfp_id or listing.rfp_id
+        effective_title = title or listing.title
+        effective_due = due_date or listing.due_date
+        
+        result = await _controller.run_for_pdf(
+            file_obj=buffer,
+            rfp_id=effective_id,
+            title=effective_title,
+            due_date=effective_due,
+        )
+        return result
+    except HTTPException:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Failed to run auto-bid pipeline for URL: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to run RFP auto-bid pipeline for URL: {str(exc)}",
         )
 
 
