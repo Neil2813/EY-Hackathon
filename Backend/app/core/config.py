@@ -46,7 +46,14 @@ class Settings:
         
         # RFP URLs to scan (comma-separated)
         self.rfp_urls: str = os.getenv("RFP_URLS", "")
-
+        
+        # CORS allowed origins (comma-separated)
+        cors_origins_env = os.getenv("CORS_ORIGINS", "*")
+        if cors_origins_env == "*":
+            self.cors_origins: list[str] = ["*"]
+        else:
+            self.cors_origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+        
         # Metadata
         self.app_name: str = "RFP Multi-Agent Engine (Gemini + LangChain)"
         self.app_version: str = "1.0.0"
