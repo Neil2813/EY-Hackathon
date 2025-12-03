@@ -1,0 +1,20 @@
+[
+  {
+    "rfp_id": "RFP-2025-001",
+    "title": "Supply of LT XLPE Power Cables",
+    "url": "synthetic_rfp_1.pdf",
+    "due_date": "2025-02-15"
+  },
+  {
+    "rfp_id": "RFP-2025-002",
+    "title": "HT Armoured Cable Procurement",
+    "url": "synthetic_rfp_2.pdf",
+    "due_date": "2025-03-05"
+  },
+  {
+    "rfp_id": "RFP-2025-003",
+    "title": "Control & Instrumentation Cable Supply",
+    "url": "synthetic_rfp_3.pdf",
+    "due_date": "2025-01-28"
+  }
+]

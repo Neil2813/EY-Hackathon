@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Phoenix RFP Xcelerator Theme - Salmon & Dark */
+    --background: 6 100% 72%;  /* #fa8072 - salmon */
+    --foreground: 10 92% 3%;   /* #0b0100 - very dark brown/black */
+
+    --card: 6 100% 78%;        /* lighter salmon for cards */
+    --card-foreground: 10 92% 3%;
+
+    --popover: 6 100% 82%;
+    --popover-foreground: 10 92% 3%;
+
+    --primary: 10 92% 3%;      /* dark text color as primary */
+    --primary-foreground: 6 100% 72%;  /* salmon text on dark */
+
+    --secondary: 6 100% 85%;   /* very light salmon */
+    --secondary-foreground: 10 92% 3%;
+
+    --muted: 6 60% 88%;        /* desaturated light salmon */
+    --muted-foreground: 10 50% 25%;
+
+    --accent: 10 85% 15%;      /* darker accent */
+    --accent-foreground: 6 100% 82%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 10 40% 20%;      /* subtle dark borders */
+    --input: 6 90% 85%;
+    --ring: 10 92% 3%;
+
+    --radius: 0.75rem;
+
+    /* Custom design tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(6 100% 72%), hsl(6 100% 78%));
+    --gradient-card: linear-gradient(180deg, hsl(6 100% 78%), hsl(6 100% 72%));
+    
+    --shadow-soft: 0 4px 20px hsla(10 92% 3% / 0.1);
+    --shadow-medium: 0 8px 30px hsla(10 92% 3% / 0.15);
+    --shadow-strong: 0 12px 40px hsla(10 92% 3% / 0.25);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 6 100% 78%;
+    --sidebar-foreground: 10 92% 3%;
+    --sidebar-primary: 10 92% 3%;
+    --sidebar-primary-foreground: 6 100% 82%;
+    --sidebar-accent: 6 100% 85%;
+    --sidebar-accent-foreground: 10 92% 3%;
+    --sidebar-border: 10 40% 20%;
+    --sidebar-ring: 10 92% 3%;
+  }
+
+  .dark {
+    --background: 10 92% 3%;
+    --foreground: 6 100% 82%;
+
+    --card: 10 80% 8%;
+    --card-foreground: 6 100% 82%;
+
+    --popover: 10 80% 8%;
+    --popover-foreground: 6 100% 82%;
+
+    --primary: 6 100% 72%;
+    --primary-foreground: 10 92% 3%;
+
+    --secondary: 10 60% 12%;
+    --secondary-foreground: 6 100% 82%;
+
+    --muted: 10 50% 15%;
+    --muted-foreground: 6 60% 65%;
+
+    --accent: 6 90% 65%;
+    --accent-foreground: 10 92% 3%;
+
+    --destructive: 0 85% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 10 40% 20%;
+    --input: 10 50% 15%;
+    --ring: 6 100% 72%;
+
+    --sidebar-background: 10 80% 8%;
+    --sidebar-foreground: 6 100% 82%;
+    --sidebar-primary: 6 100% 72%;
+    --sidebar-primary-foreground: 10 92% 3%;
+    --sidebar-accent: 10 50% 15%;
+    --sidebar-accent-foreground: 6 100% 82%;
+    --sidebar-border: 10 40% 20%;
+    --sidebar-ring: 6 100% 72%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Advent Pro', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Share Tech', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  /* Smooth animations */
+  * {
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

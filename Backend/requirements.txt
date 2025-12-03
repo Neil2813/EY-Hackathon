@@ -1,0 +1,16 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.5
+pydantic==2.9.2
+pypdf==5.1.0
+python-multipart==0.0.9
+python-dotenv==1.0.1
+# LangChain 0.3 Stack
+langchain==0.3.7
+# UPDATED: Version 2.0+ is required for LangChain 0.3
+langchain-google-genai==2.0.1
+# REMOVED: langchain-core (Let langchain 0.3.7 pull the exact version it needs automatically)
+typing-extensions==4.12.2
+# Web scraping
+beautifulsoup4==4.12.3
+requests==2.31.0
+lxml==5.3.0

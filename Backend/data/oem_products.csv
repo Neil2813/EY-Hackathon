@@ -1,0 +1,5 @@
+sku,conductor_size_sqmm,insulation,voltage_rating_v,cores,material
+OEM-CAB-001,4,XLPE,1100,1,Copper
+OEM-CAB-002,6,PVC,650,2,Copper
+OEM-CAB-003,10,FRLS,1100,3,Aluminium
+OEM-CAB-004,16,XLPE,1100,4,Copper
